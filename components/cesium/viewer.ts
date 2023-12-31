@@ -1,8 +1,20 @@
-import { Camera, Math as CesiumMath, Cartesian3, SceneMode, Terrain, Viewer } from "cesium";
+import { constrainLat, constrainLon } from "@/utils/numbers";
+import { Camera, Cartesian3, SceneMode, Terrain, Viewer, createOsmBuildingsAsync, Rectangle } from "cesium";
 
 Camera.DEFAULT_VIEW_FACTOR = 0
-// Camera.DEFAULT_VIEW_RECTANGLE = new Rectangle(1, 1, 1, 1)
+const DEFAULT_VIEW_WIDTH = 0.005
+const DEFAULT_START_LON = -122.4175 // deg lon
+const DEFAULT_START_LAT = 37.655 // deg lat
+const DEFAULT_START_HEIGHT = 400 // m above ellipsoid (?)
+const DEFAULT_START_POINT = Cartesian3.fromDegrees(DEFAULT_START_LON, DEFAULT_START_LAT, DEFAULT_START_HEIGHT)
 
+const W = DEFAULT_VIEW_WIDTH / 2
+Camera.DEFAULT_VIEW_RECTANGLE = Rectangle.fromDegrees(
+    constrainLon(DEFAULT_START_LON - W),
+    constrainLat(DEFAULT_START_LAT - W),
+    constrainLon(DEFAULT_START_LON + W),
+    constrainLat(DEFAULT_START_LAT + W)
+)
 
 /**
  * Docs:
@@ -13,7 +25,7 @@ Camera.DEFAULT_VIEW_FACTOR = 0
  * @returns 
  */
 
-export function getViewer(containerRef: HTMLDivElement): Viewer {
+export async function getViewer(containerRef: HTMLDivElement): Promise<Viewer> {
     const viewer = new Viewer(containerRef, {
         terrain: Terrain.fromWorldTerrain(),
         scene3DOnly: true,
@@ -74,13 +86,13 @@ export function getViewer(containerRef: HTMLDivElement): Viewer {
     // viewer.scene.primitives.add(buildingTileset);
 
     // Fly the camera to San Francisco at the given longitude, latitude, and height.
-    viewer.camera.flyTo({
-        destination: Cartesian3.fromDegrees(-122.4175, 37.655, 400),
-        orientation: {
-            heading: CesiumMath.toRadians(0.0),
-            pitch: CesiumMath.toRadians(-15.0),
-        }
-    })
+    // viewer.camera.flyTo({
+    //     destination: DEFAULT_START_POINT,
+    //     orientation: {
+    //         heading: CesiumMath.toRadians(0.0),
+    //         pitch: CesiumMath.toRadians(-15.0),
+    //     }
+    // })
 
     return viewer
 }

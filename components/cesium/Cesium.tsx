@@ -2,15 +2,15 @@
 import { Ion, Math as CesiumMath, Viewer } from 'cesium';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Grid } from 'react-loader-spinner';
-import { getViewer } from './viewer';
-// import "cesium/Build/Cesium/Widgets/widgets.css";
+import { getViewer } from './viewer';         
+import "cesium/Build/Cesium/Widgets/widgets.css";
 
 if (!process.env.NEXT_PUBLIC_CESIUM_KEY) throw new Error('No cesium key in env')
 Ion.defaultAccessToken = process.env.NEXT_PUBLIC_CESIUM_KEY
 
 
-const MOVE_DISTANCE = 10 // meters
-const LOOK_ANGLE = CesiumMath.toRadians(2) //
+const MOVE_DISTANCE = 20 // meters
+const LOOK_ANGLE = CesiumMath.toRadians(0.8) //
 
 
 export const CesiumContainer = () => {
@@ -28,7 +28,7 @@ export const CesiumContainer = () => {
             if (!containerRef.current) throw new Error("Cesium container not found")
             containerRef.current.innerHTML = ''
 
-            const newViewer = getViewer(containerRef.current)
+            const newViewer = await getViewer(containerRef.current)
             setViewer(newViewer)
         } catch (error) {
             console.error(error)
@@ -51,7 +51,6 @@ export const CesiumContainer = () => {
     const acceptedKeys = Object.keys(keyFns)
     const pressedKeys = useRef<Record<string, boolean>>({}).current
     const executeKeyFunctions = () => {
-        console.log(pressedKeys)
         Object.keys(keyFns).forEach(key => {
             if (pressedKeys[key]) keyFns[key]()
         })
@@ -81,9 +80,9 @@ export const CesiumContainer = () => {
     }, [viewer])
 
     return (
-        <div className="flex-1 relative min-w-[1000px]">
+        <div className="flex-1 relative min-w-[1000px] bg-black">
             <div
-                className=""
+                className="w-full"
                 ref={containerRef}
             />
             {(loading || !viewer) &&

@@ -1,5 +1,5 @@
-import { CesiumContainer } from './cesium'
-import Wasm from './wasm'
+import { CesiumContainer } from '@/components/cesium/Cesium'
+import Wasm from '@/components/wasm/Wasm'
 
 export default function Home() {
     return (

@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run wasm && next build",
     "start": "next start",
     "lint": "next lint",
-    "wasm": "rm -r wasm/build/* && emcc -o wasm/build/index.html wasm/source/*.c -Wall -g -lm -s USE_SDL=2"
+    "wasm": "sh wasm/build.sh",
+    "wasm:ex": "sh wasm/build-example.sh"
   },
   "dependencies": {
     "cesium": "^1.112.0",

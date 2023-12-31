@@ -1,0 +1,1 @@
+export { randomBetween } from '@/utils/example'

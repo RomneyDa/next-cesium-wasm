@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Com examples</title>
+    <style>
+        button {
+            margin: 5px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script>
+        var counter = 0;
+        setInterval(() => {
+            document.getElementById('main').innerHTML = counter++;
+        }, 500);
+
+        var Module = {
+            onRuntimeInitialized: function() {
+                document.getElementById('state').innerHTML = 'RuntimeInitialized';
+
+                console.log('-----------------------------------------------------');
+                var upperCase = Module.makeUppperCase("hello world");
+                console.log('Module.makeUppperCase("hello world"): ' + upperCase);
+
+                console.log('-----------------------------------------------------');
+                console.log('Module.class test');
+
+                var instance = new Module.MyClass(10, "hello");
+                console.log('instance.x: ' + instance.x);
+                instance.incrementX();
+                instance.x; // 11
+                console.log('instance.x: ' + instance.x);
+                instance.x = 20; // 20
+                console.log('instance.x: ' + instance.x);
+                var getStringFromInatance = Module.MyClass.getStringFromInstance(instance); // "hello"
+                console.log('Module.MyClass.getStringFromInstance(instance): ' + getStringFromInatance);
+                instance.delete();
+
+                console.log('-----------------------------------------------------');
+
+            }
+        };
+    </script>
+    <script>
+        var counter = 0;
+        setInterval(() => {
+            document.getElementById('main').innerHTML = counter++;
+        }, 500);
+
+        var Module = {
+            onRuntimeInitialized: function() {
+                document.getElementById('state').innerHTML = 'RuntimeInitialized';
+            }
+        };
+
+        function jsMethod() {
+            alert('I am a js method and I am called from C++');
+        }
+
+        function jsMethodAgrs(title, msg) {
+            alert(title + '\n' + msg);
+        }
+
+        /////////////////////////////////////////////////
+        function jsCallback(msg) {
+            alert(msg);
+        }
+
+        var fnMap = {
+            0: jsCallback
+        }
+
+        function functionMap(index, data) {
+            fnMap[index](data);
+        }
+    </script>
+
+    <script type="text/javascript" src="example.js"></script>
+</head>
+
+<body>
+    <h1 id="state">Loading...</h1>
+    <br>
+    <div id="main"></div>
+
+    <br> <br>
+    <button onclick="Module.callJsBack()">Call jsMethod() back</button>
+    <br>
+    <button onclick="Module.callJsBackWithAgrs()">Call callJsBackWithAgrs() back</button>
+    <br>
+    <button onclick="Module.cppFunctionWithJsCallback(0)">Js function as a callback</button>
+
+    <br>
+</body>
+
+</html>
