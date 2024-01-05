@@ -1,8 +1,8 @@
 "use client"
 import { Ion, Math as CesiumMath, Viewer } from 'cesium';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Grid } from 'react-loader-spinner';
-import { getViewer } from './viewer';         
+import { getViewer } from './viewer';
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 if (!process.env.NEXT_PUBLIC_CESIUM_KEY) throw new Error('No cesium key in env')
